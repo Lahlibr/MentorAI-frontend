@@ -1,0 +1,54 @@
+# General OS files
+.DS_Store
+Thumbs.db
+*.lnk
+
+# Windows system files
+AppData/
+NTUSER.*
+ntuser.*
+*.suo
+*.user
+*.userprefs
+
+# IDE & Editor
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+dist/
+build/
+.next/
+out/
+
+# .NET
+bin/
+obj/
+.nuget/
+packages/
+*.nupkg
+*.suo
+*.user
+*.cachefile
+*.VC.db
+
+# Docker
+docker-compose*.yml
+.dockerignore
+
+# Logs
+*.log
+logs/
+
+# Temp files
+*.tmp
+*.temp
+*~

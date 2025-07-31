@@ -1,0 +1,18 @@
+# Create React app with TypeScript
+npx create-react-app mentorai-frontend --template typescript
+
+# Navigate to project
+# cd mentorai-frontend
+
+# Install additional dependencies
+ #npm install react-router-dom lucide-react
+
+# Install Tailwind CSS
+ #npm install -D tailwindcss postcss autoprefixer
+ #npx tailwindcss init -p
+
+# Install TypeScript types
+#npm install -D @types/react-router-dom
+
+# Start the development server
+#npm start
