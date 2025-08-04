@@ -26,3 +26,18 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 };
 
 export default LoadingSpinner;
+
+let loadingCount = 0;
+
+export const showLoading = () => {
+  loadingCount++;
+  // Example: update some global state, trigger a React context, or DOM manipulation to show spinner
+  console.log('Show loading spinner');
+};
+
+export const hideLoading = () => {
+  loadingCount = Math.max(loadingCount - 1, 0);
+  if (loadingCount === 0) {
+    console.log('Hide loading spinner');
+  }
+};

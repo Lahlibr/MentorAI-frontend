@@ -1,26 +1,7 @@
-import Cookies from 'js-cookie';
-
-export const API_BASE_URL = 'https://localhost:7001/api';
-//Generic interface for handling API responses
-export interface ApiResponse<T> {
-  data: T;
-  success: boolean;
-  message?: string;}
-
-//Custom error class to wrap and throw meaningful errors from the API.like unauthorized access, not found, etc.
-// apiError.ts
-export class ApiError extends Error {
-  statusCode: number;
-  errors?: Record<string, string[]>;
-
-  constructor(statusCode: number, message: string, errors?: Record<string, string[]>) {
-    super(message);
-    this.name = 'ApiError';
-    this.statusCode = statusCode;
-    this.errors = errors;
-  }
-}
-
+import { ApiError } from "./ApiError";
+import { Cookie } from "lucide-react";
+import Cookies from "js-cookie";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://localhost:7001/api';
 
 export const apiCall = async <T>(
   endpoint: string,
@@ -67,6 +48,3 @@ export const apiCall = async <T>(
     throw new ApiError(0, 'Network error occurred', {});
   }
 };
-
-
-

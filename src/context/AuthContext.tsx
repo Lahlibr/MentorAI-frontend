@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import Cookies from 'js-cookie';
 
-import { AuthService } from '@/Services/AuthService';
 import { AuthContextType, LoginResponseDto, User, RegisterDto, RegisterResponseDto } from '@/Models';
 import { ApiResponse } from '@/Models/api';
-import { ApiError } from '@/Services/apiService';
+import { ApiError } from '../api/ApiError';
+import { AuthService } from '@/Services/api/AuthService';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { ErrorMessage, SuccessMessage } from '@/Components/common/Messages';
 import LoadingSpinner from '@/Components/common/LoadingSpinner';
 import { UserEnum } from '@/Models';
-import { ApiError } from '@/Services/apiService';
+import { ApiError } from '@/Services/api/apiService';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({

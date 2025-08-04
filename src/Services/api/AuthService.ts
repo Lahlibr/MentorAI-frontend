@@ -1,5 +1,5 @@
+import { apiCall } from "@/api/ApiCall";
 import { LoginDto, RegisterDto, LoginResponseDto, RegisterResponseDto, UserEnum } from "@/Models";
-import { apiCall } from "./apiService";
 
 export class AuthService {
   static async login(data: LoginDto): Promise<LoginResponseDto> {
