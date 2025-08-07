@@ -8,6 +8,7 @@ interface MonacoEditorProps {
   height?: string;
   readOnly?: boolean;
   className?: string;
+  
 }
 
 const MonacoEditor: React.FC<MonacoEditorProps> = ({

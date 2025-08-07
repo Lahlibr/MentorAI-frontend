@@ -1,8 +1,11 @@
-import axios from "axios";
-import { showLoading, hideLoading } from '../Components/common/LoadingSpinner';
-import { ApiError } from "./ApiError";
+import axios, { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://localhost:7001/api';
+import { ApiError } from "./ApiError";
+import { showLoading, hideLoading } from "../Components/common/LoadingSpinner";
+
+
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://localhost:7001/api';
+
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +14,9 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
 let activeRequests = 0;
+
 const updateLoadingState = () => {
   if (activeRequests > 0) {
     showLoading();
@@ -20,11 +25,14 @@ const updateLoadingState = () => {
   }
 };
 
-axiosInstance.interceptors.request.use((config)=>{
+
+axiosInstance.interceptors.request.use((config) => {
   const token = Cookies.get('accessToken');
   if (token) {
+    config.headers = config.headers || {};
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   activeRequests++;
   updateLoadingState();
   return config;
@@ -32,52 +40,75 @@ axiosInstance.interceptors.request.use((config)=>{
   activeRequests--;
   updateLoadingState();
   return Promise.reject(error);
-
 });
 
-let isRefreshing = false;
-let failedQueue: any[] = [];
 
-const processQueue = (error: any, token: string | null = null) => { 
+let isRefreshing = false;
+type FailedRequest = {
+  resolve: (token: string) => void;
+  reject: (err: any) => void;
+};
+let failedQueue: FailedRequest[] = [];
+
+const processQueue = (error: any, token: string | null) => {
   failedQueue.forEach(prom => {
-    if (token) {
-      prom.resolve(token);
-    }else {
-      prom.reject(error);
-    }});
-    failedQueue = [];
+    if (token) prom.resolve(token);
+    else prom.reject(error);
+  });
+  failedQueue = [];
 };
 
-axiosInstance.interceptors.response.use((response) => {
-  activeRequests--;
-  updateLoadingState();
-  return response;
-}, 
-async (error) => {
-  activeRequests--;
-  updateLoadingState();
 
-  const originalRequest = error.config;
-  if (error.response && error.response.status === 401 && !originalRequest._retry) {
-    if (isRefreshing) {
-      return new Promise((resolve, reject) => {
-        failedQueue.push({ resolve, reject });
-      }).then(token => {
-        originalRequest.headers['Authorization'] = `Bearer ${token}`;
-        return axiosInstance(originalRequest);  
-      });
-    }
-    originalRequest._retry = true;
-    isRefreshing = true;
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  _retry?: boolean;
+}
 
-    try{
-      const refreshToken = Cookies.get('refreshToken');
-      const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, { token: refreshToken });
-      Cookies.set('accessToken', data.accessToken);
-      axiosInstance.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
 
+const setAuthHeader = (request: CustomAxiosRequestConfig, token: string) => {
+  request.headers = request.headers || {};
+  request.headers.Authorization = `Bearer ${token}`;
+};
+
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    activeRequests--;
+    updateLoadingState();
+    return response;
+  },
+  async (error) => {
+    activeRequests--;
+    updateLoadingState();
+
+    const originalRequest = error.config as CustomAxiosRequestConfig;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        return new Promise<string>((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          setAuthHeader(originalRequest, token);
+          return axiosInstance(originalRequest);
+        });
+      }
+
+      isRefreshing = true;
+      const refreshToken = Cookies.get("refreshToken");
+
+      if (!refreshToken) {
+        throw new ApiError(401, "No refresh token", {});
+      }
+
+      try {
+        const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, { token: refreshToken });
+        Cookies.set("accessToken", data.accessToken);
+
+        axiosInstance.defaults.headers.Authorization = `Bearer ${data.accessToken}`;
         processQueue(null, data.accessToken);
-         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+
+        setAuthHeader(originalRequest, data.accessToken);
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);

@@ -1,6 +1,6 @@
 // student.models.ts
 
-import { BaseUserProfileDto } from './base';
+import { BaseUserProfileDto } from './User';
 import { AccountStatus } from './auth';
 
 export interface StudentProfileDto extends BaseUserProfileDto {

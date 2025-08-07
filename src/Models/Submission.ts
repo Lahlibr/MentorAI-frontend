@@ -29,7 +29,7 @@ export interface TestCaseResult {
 }
 
 export interface SubmissionStatus {
-  submissionId: number;
+  submissionId: string;
   status: string;
   message: string;
   result?: SubmissionResult;

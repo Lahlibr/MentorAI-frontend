@@ -1,50 +1,35 @@
+import axios from "axios"; // <-- Needed for isAxiosError
+import axiosInstance from "./axiosInstance";
 import { ApiError } from "./ApiError";
-import { Cookie } from "lucide-react";
-import Cookies from "js-cookie";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://localhost:7001/api';
 
 export const apiCall = async <T>(
-  endpoint: string,
-  options: RequestInit = {}
+  method: 'get' | 'post' | 'put' | 'delete',
+  url: string,
+  data?: any,
+  config?: object
 ): Promise<T> => {
-  const token = Cookies.get('accessToken');
-  const defaultHeaders: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-
-  if (token) {
-    defaultHeaders.Authorization = `Bearer ${token}`;
-  }
-
-  const config: RequestInit = {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...(options.headers || {}),
-    },
-  };
-
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+    const response = await axiosInstance.request<T>({
+      method,
+      url,
+      data,
+      ...config,
+    });
 
-    const contentType = response.headers.get('content-type');
-    const isJson = contentType && contentType.includes('application/json');
-    const body = isJson ? await response.json() : null;
-
-    if (!response.ok) {
-      throw new ApiError(
-        response.status,
-        body?.message || `HTTP error! status: ${response.status}`,
-        body?.errors
-      );
-    }
-
-    return body;
-  } catch (error) {
+    return response.data;
+  } catch (error: unknown) {
     if (error instanceof ApiError) {
       throw error;
     }
 
-    throw new ApiError(0, 'Network error occurred', {});
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status || 0;
+      const message = error.response?.data?.message || 'Network error';
+      const errors = error.response?.data?.errors;
+
+      throw new ApiError(status, message, errors);
+    }
+
+    throw new ApiError(0, 'An unknown error occurred');
   }
 };

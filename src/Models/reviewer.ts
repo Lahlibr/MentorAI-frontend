@@ -1,5 +1,5 @@
 // reviewer.models.ts
-import { BaseUserProfileDto } from './base';
+import { BaseUserProfileDto } from './User';
 
 export interface ReviewerAvailabilityDto {
   day: DayEnum;
