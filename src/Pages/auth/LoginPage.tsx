@@ -43,11 +43,11 @@ const LoginPage: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">
           <div className="flex justify-center mb-4">
-            <div className="p-4 gradient-primary rounded-2xl shadow-lg">
+            <div className="p-4 bg-gradient-primary rounded-2xl shadow-lg">
               <Code className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold gradient-primary bg-clip-text  text-emerald-800">
             Welcome Back
           </h1>
           <p className="text-secondary mt-2">
@@ -113,7 +113,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg gradient-primary text-white font-medium hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg bg-gradient-primary text-white font-medium hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
             >
               {isLoading ? (
                 <LoadingSpinner size="sm" color="neutral" />

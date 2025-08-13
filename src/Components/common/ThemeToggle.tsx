@@ -8,7 +8,9 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="relative p-3 rounded-xl bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border shadow-card dark:shadow-card-dark hover:shadow-lg dark:hover:shadow-xl transition-all duration-300 group"
+      className="relative p-3 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-600 
+                 shadow-lg dark:shadow-xl hover:shadow-xl dark:hover:shadow-2xl 
+                 transition-all duration-300 group hover:scale-105"
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
@@ -26,7 +28,8 @@ const ThemeToggle: React.FC = () => {
       </div>
       
       {/* Ripple effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-primary opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 
+                      opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
     </button>
   );
 };

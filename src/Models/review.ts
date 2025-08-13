@@ -11,3 +11,6 @@ export interface Review extends BaseUserProfileDto {
   problemTitle?: string; 
   studentCode: string;
 }
+export interface TestCase{
+  
+}

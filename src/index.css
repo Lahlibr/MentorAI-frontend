@@ -1,5 +1,24 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Global theme variables */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #1f2937;
+  --surface-color: #f8fafc;
+  --border-color: #e5e5e5;
+}
+
+.dark {
+  --bg-color: #0f172a;
+  --text-color: #f8fafc;
+  --surface-color: #1e293b;
+  --border-color: #334155;
+  color-scheme: dark;
+}
+
+/* Apply theme variables to body */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -7,37 +26,41 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@layer utilities {
-  .bg-gradient-light {
-    background: linear-gradient(135deg, #f0f9ff 0%, #fdf2f8 100%);
-  }
-  
-  .bg-gradient-dark {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  }
-  
-  .bg-gradient-primary {
-    background: linear-gradient(135deg, #0ea5e9 0%, #ec4899 100%);
-  }
-  
-  .bg-gradient-card {
-    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,249,255,0.9) 100%);
-  }
-  
-  .bg-gradient-card-dark {
-    background: linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(15,23,42,0.9) 100%);
-  }
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode specific styles */
-.dark {
-  color-scheme: dark;
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 /* Custom animations */
@@ -59,17 +82,19 @@ code {
   animation: slideUp 0.3s ease-out;
 }
 
-/* Global styles */
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Force dark mode styles for components that might not be updating */
+.dark .bg-white {
+  background-color: #1e293b !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.dark .text-gray-900 {
+  color: #f8fafc !important;
+}
+
+.dark .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark .border-gray-200 {
+  border-color: #334155 !important;
 }

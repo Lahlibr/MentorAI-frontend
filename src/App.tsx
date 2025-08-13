@@ -6,12 +6,15 @@ import { AuthProvider } from '@/context/AuthContext';
 import Navbar from '@/Components/common/Navbar';
 import LoadingSpinner from '@/Components/common/LoadingSpinner';
 
-import allRoutes from '@/routes';
+import allRoutes from '@/routes/allRoutes';
 
 import { useAuth } from '@/context/AuthContext';
 import PrivateRoute from './Components/Router/PrivateRoute';
 import DashboardRouter from './Components/Router/DashboardRouter';
 import PublicRoute from './Components/Router/PublicRoute';
+import { ProblemFormProvider } from './context/ProblemFormContext';
+import { Provider } from 'react-redux';
+import { store } from './store/slices';
 
 const AppContent: React.FC = () => {
   const { user, isLoading } = useAuth();
@@ -81,13 +84,17 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => (
-  <ThemeProvider>
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
-  </ThemeProvider>
+   <Provider store={store}>
+      <ThemeProvider>
+        <AuthProvider>
+          <ProblemFormProvider>
+              <Router>
+                <AppContent />
+              </Router>
+          </ProblemFormProvider>
+        </AuthProvider>
+      </ThemeProvider>
+  </Provider>
 );
 
 export default App;

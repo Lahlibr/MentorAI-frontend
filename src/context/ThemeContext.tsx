@@ -59,17 +59,26 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const root = document.documentElement;
     const body = document.body;
     
+    // Remove both classes first to avoid conflicts
+    root.classList.remove('dark', 'light');
+    body.classList.remove('dark', 'light');
+    
+    // Add the current theme class
+    root.classList.add(newTheme);
+    body.classList.add(newTheme);
+    
+    // Apply body styles with CSS custom properties for better consistency
     if (newTheme === 'dark') {
-      root.classList.add('dark');
-      body.classList.add('dark');
       body.style.backgroundColor = '#0f172a';
       body.style.color = '#f8fafc';
     } else {
-      root.classList.remove('dark');
-      body.classList.remove('dark');
       body.style.backgroundColor = '#ffffff';
       body.style.color = '#1f2937';
     }
+
+    // Debug logging (remove in production)
+    console.log('Theme applied:', newTheme);
+    console.log('HTML classes:', root.classList.toString());
   };
 
   const setTheme = (newTheme: Theme) => {
@@ -85,7 +94,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // Don't render until theme is initialized to prevent flash
   if (!isInitialized) {
-    return <div className="fixed inset-0 bg-white dark:bg-dark-bg" />;
+    return (
+      <div className="fixed inset-0 bg-white dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   const value: ThemeContextType = {

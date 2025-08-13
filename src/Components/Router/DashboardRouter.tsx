@@ -1,9 +1,10 @@
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 
-import StudentDashboard from '@/Pages/student/StudentDashboard';
+
 import ReviewerDashboard from '@/Pages/reviewer/ReviewerDashboard';
 import AdminDashboard from '@/Pages/admin/AdminDashboard';
+import StudentDashboard from '@/Pages/student/studentDashboard';
 
 const DashboardRouter: React.FC = () => {
   const { user } = useAuth();

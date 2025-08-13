@@ -14,6 +14,7 @@ const publicRoutes : AppRoute[] = [
     element: <RegisterPage />,
     public: true,
   },
+  
 ];
 
 export default publicRoutes;

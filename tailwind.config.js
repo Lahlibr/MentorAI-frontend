@@ -7,18 +7,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Light Mode Colors
         primary: {
-          50: '#f0f9ff',   // Very light blue
-          100: '#e0f2fe',  // Light blue
-          200: '#bae6fd',  // Lighter blue
-          300: '#7dd3fc',  // Light blue
-          400: '#38bdf8',  // Medium blue
-          500: '#0ea5e9',  // Primary blue
-          600: '#0284c7',  // Darker blue
-          700: '#0369a1',  // Dark blue
-          800: '#075985',  // Very dark blue
-          900: '#0c4a6e',  // Darkest blue
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
         },
         secondary: {
           50: '#fdf2f8',   // Very light pink
